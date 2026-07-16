@@ -1,0 +1,266 @@
+<section class="hero-section">
+    <div class="group">
+        <div class="text">
+            <h2>
+                I'm <br>
+                <span class="typewriter-container">
+                    <span id="typewriter-text"></span><span class="cursor"></span>
+                </span>
+                
+                {% if site.external-links %}
+                <span class="external-links">
+                    {% assign platforms = "linkedin,x-twitter,github,stackoverflow,discord,medium,threads,bluesky,instagram,youtube" | split: "," %}
+                    {% for platform in platforms %}
+                        {% if site.external-links[platform] %}
+                            {% case platform %}
+                            {% when 'linkedin' %} <a href="https://www.linkedin.com/in/{{ site.external-links[platform] }}/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                            {% when 'github' %} <a href="https://github.com/{{ site.external-links[platform] }}/" target="_blank"><i class="fa-brands fa-github"></i></a>
+                            {% when 'stackoverflow' %} <a href="https://stackoverflow.com/users/{{ site.external-links[platform] }}/" target="_blank"><i class="fa-brands fa-stack-overflow"></i></a>
+                            {% when 'discord' %} <a href="https://discord.com/users/{{ site.external-links[platform] }}/" target="_blank"><i class="fa-brands fa-discord"></i></a>
+                            {% when 'medium' %} <a href="https://medium.com/@{{ site.external-links[platform] }}/" target="_blank"><i class="fa-brands fa-medium"></i></a>
+                            {% when 'x-twitter' %} <a href="https://x.com/{{ site.external-links[platform] }}/" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                            {% when 'threads' %} <a href="https://threads.net/@{{ site.external-links[platform] }}/" target="_blank"><i class="fa-brands fa-threads"></i></a>
+                            {% when 'bluesky' %} <a href="https://bsky.app/profile/{{ site.external-links[platform] }}/" target="_blank"><i class="fa-solid fa-cloud"></i></a>
+                            {% when 'instagram' %} <a href="https://instagram.com/{{ site.external-links[platform] }}/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                            {% when 'youtube' %} <a href="https://youtube.com/@{{ site.external-links[platform] }}/" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+                            {% endcase %}
+                        {% endif %}
+                    {% endfor %}
+                </span>
+                {% endif %}
+            </h2>
+            
+            <h3> {{site.headline}} </h3>
+            <p> {{site.description}}</p>
+            <div class="links">
+                <a href="#projects"><i class="fa-solid fa-pen"></i><span>Projects</span></a>
+                <a href="#skills"><i class="fa-solid fa-hammer"></i><span>Skills</span></a>
+                <a href="#contact"><i class="fa-solid fa-envelope"></i><span>Contact Me</span></a>
+            </div>
+            
+        </div>
+        <div class="headshot">
+            <img class="hover-zoom" src="{{ site.profile_image }}" alt="profile picture">       
+        </div>
+    </div>
+</section>
+
+<div class="arrow"> 
+    <a href="#projects">
+        More About Me
+        <i class="fa-solid fa-angles-down" style="display: block; margin-top: 5px;"></i>
+    </a> 
+</div>
+
+<div class="oscillo-container">
+    <canvas id="oscilloCanvas"></canvas>
+</div>
+
+<style>
+    /* 1. LAYOUT HERO */
+    .hero-section .group {
+        display: flex;
+        align-items: center; 
+        justify-content: space-between;
+        gap: 30px; 
+        margin-bottom: 10px;
+    }
+    .hero-section .text { flex: 1; }
+
+    /* TITRE FORCE */
+    .hero-section .text h2 {
+        margin-top: 0 !important;
+        line-height: 1.2 !important;
+        font-size: 50px !important; 
+        margin-bottom: 20px !important;
+    }
+
+    /* === NOUVEAU STYLE TYPEWRITER ROBUSTE === */
+    .typewriter-container {
+        display: inline-flex; /* Colle les éléments */
+        align-items: baseline; /* Aligne sur la ligne de texte */
+    }
+    
+    /* Le Curseur Physique */
+    .cursor {
+        display: inline-block;
+        width: 3px; /* Épaisseur du curseur */
+        height: 1em; /* Hauteur relative à la police */
+        background-color: #333; /* Couleur noire */
+        margin-left: 2px; /* Petit espace esthétique */
+        animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+
+    /* 2. IMAGE (300px Rond parfait) */
+    .hero-section .headshot img {
+        width: 300px !important; height: 300px !important;
+        min-width: 300px !important; min-height: 300px !important;
+        object-fit: cover !important; border-radius: 50% !important;
+        aspect-ratio: 1/1 !important; 
+    }
+    .headshot { flex: 0 0 auto !important; display: block !important; }
+    
+    .hover-zoom { transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+    .hover-zoom:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+
+    /* 3. ESPACEMENT BOUTON / OSCILLO */
+    .arrow {
+        text-align: center; position: relative; z-index: 10; 
+        margin-top: -30px; margin-bottom: 0;
+    }
+    .arrow a {
+        text-decoration: none; color: inherit;
+        background: white; padding: 5px 10px; border-radius: 10px; display: inline-block;
+    }
+
+    .oscillo-container {
+        position: relative; width: 100%; height: 200px; 
+        background-color: #ffffff; overflow: hidden; border-bottom: 1px solid #e0e0e0;
+        margin-top: 40px; z-index: 1; 
+    }
+    canvas#oscilloCanvas { display: block; width: 100%; height: 100%; }
+
+    /* FIX MOBILE */
+    @media (max-width: 768px) {
+        .hero-section .text h2 { display: block !important; flex-direction: row !important; font-size: 35px !important; }
+        .hero-section .group { flex-direction: column-reverse !important; text-align: center; }
+        
+        /* Centrage du titre sur mobile */
+        .typewriter-container { justify-content: center; }
+    }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Le texte à écrire
+    const textToType = "{{ site.name }}"; 
+    const element = document.getElementById("typewriter-text");
+    
+    element.innerHTML = ""; // On vide au cas où
+    let i = 0;
+    
+    function type() {
+        if (i < textToType.length) {
+            element.innerHTML += textToType.charAt(i);
+            i++;
+            setTimeout(type, 100); // Vitesse de frappe
+        }
+    }
+    
+    // Petit délai avant de commencer pour faire joli
+    setTimeout(type, 500);
+});
+</script>
+
+<script>
+(function() {
+    if (window.location.hash) window.history.replaceState(null, null, window.location.pathname);
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+
+    const canvas = document.getElementById('oscilloCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, time = 0, waveType = 0; 
+    const waveSpeed = 0.03, frequency = 0.03, amplitudeFactor = 0.7, moveSpeed = 3;         
+    
+    setInterval(() => { waveType = (waveType + 1) % 4; }, 5000);
+
+    function resize() {
+        width = canvas.width = canvas.parentElement.offsetWidth;
+        height = canvas.height = canvas.parentElement.offsetHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function drawGrid() {
+        ctx.strokeStyle = "rgba(0, 0, 0, 0.05)"; ctx.lineWidth = 1;
+        const gridSize = 40;
+        ctx.beginPath();
+        for (let x = 0; x <= width; x += gridSize) { ctx.moveTo(x, 0); ctx.lineTo(x, height); }
+        for (let y = 0; y <= height; y += gridSize) { ctx.moveTo(0, y); ctx.lineTo(width, y); }
+        ctx.stroke();
+    }
+
+    function getY(x, t) {
+        const centerY = height / 2;
+        const amp = (height / 2) * amplitudeFactor;
+        const angle = (x * frequency) - (t * moveSpeed);
+        let val = 0;
+        if (waveType === 0) val = Math.sin(angle);
+        else if (waveType === 1) val = Math.sign(Math.sin(angle));
+        else if (waveType === 2) val = (2 / Math.PI) * Math.asin(Math.sin(angle));
+        else if (waveType === 3) {
+            let normalizedAngle = (angle / (2 * Math.PI)); 
+            val = 2 * (normalizedAngle - Math.floor(normalizedAngle + 0.5));
+        }
+        return centerY + (val * amp);
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, width, height);
+        drawGrid();
+        ctx.beginPath(); ctx.lineWidth = 3; ctx.strokeStyle = '#0056b3'; ctx.shadowBlur = 0; 
+        for (let x = 0; x < width; x++) {
+            const y = getY(x, time);
+            if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        time += waveSpeed;
+        requestAnimationFrame(animate);
+    }
+    animate();
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+(function() {
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let cursor = 0;
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key.toLowerCase() === konamiCode[cursor].toLowerCase()) {
+            cursor++;
+            if (cursor === konamiCode.length) {
+                activateEasterEgg();
+                cursor = 0; 
+            }
+        } else {
+            cursor = 0; 
+        }
+    });
+
+    function activateEasterEgg() {
+        const img = document.querySelector('.headshot img');
+        if(img) {
+            img.style.transition = "transform 2s cubic-bezier(0.68, -0.55, 0.27, 1.55)";
+            img.style.transform = "rotate(720deg) scale(1.2)"; 
+            setTimeout(function() { img.style.transform = "rotate(0deg) scale(1)"; }, 2500);
+        }
+        function fireCannon(particleRatio, opts) {
+            confetti(Object.assign({}, {
+                particleCount: Math.floor(200 * particleRatio),
+                spread: 70, origin: { y: 0.6 }
+            }, opts));
+        }
+        fireCannon(0.25, { spread: 26, startVelocity: 55 });
+        fireCannon(0.2, { spread: 60 });
+        fireCannon(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+        fireCannon(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+        fireCannon(0.1, { spread: 120, startVelocity: 45 });
+    }
+})();
+</script>
+
+<script>
+(function() {
+    let docTitle = document.title;
+    window.addEventListener("blur", () => { document.title = "Come back! ⚡"; });
+    window.addEventListener("focus", () => { document.title = docTitle; });
+})();
+</script>
